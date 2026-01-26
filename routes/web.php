@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 // Jalur Tamu (Belum Login) 
@@ -20,4 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/warga/dashboard', function () {
         return "Halo Warga! Ini halaman kamu.";
     })->name('user.dashboard');
+    // Rute untuk Warga 
+    Route::get('/lapor', [ReportController::class, 'index'])->name('user.lapor');
+    Route::post('/lapor', [ReportController::class, 'store'])
+        -> name('user.lapor.store');
 });
