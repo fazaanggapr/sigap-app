@@ -13,7 +13,9 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return view('user.lapor');
+        // LOGIKA: Ambil laporan DIMANA (Where) id pemiliknya == ID saya yang sedang Flogin 
+        $myReports = Report::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        return view('user.lapor', compact('myReports'));
     }
 
     /**
@@ -23,10 +25,10 @@ class ReportController extends Controller
     {
         // A. Validasi Input
         $request->validate([
-            'title'       => 'required|max:255',
+            'title' => 'required|max:255',
             'description' => 'required',
-            'location'    => 'nullable|string',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // max 2MB
+            'location' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // max 2MB
         ]);
 
         // B. Upload Foto (jika ada)
@@ -37,11 +39,11 @@ class ReportController extends Controller
 
         // C. Simpan ke Database
         Report::create([
-            'user_id'     => Auth::id(),
-            'title'       => $request->title,
+            'user_id' => Auth::id(),
+            'title' => $request->title,
             'description' => $request->description,
-            'location'    => $request->location,
-            'image'       => $imagePath,
+            'location' => $request->location,
+            'image' => $imagePath,
             'status' => '0', // pending
 
         ]);

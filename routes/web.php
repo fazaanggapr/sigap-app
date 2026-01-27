@@ -14,9 +14,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     // Dashboard Admin 
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
     // Dashboard Warga (Sementara) 
     Route::get('/warga/dashboard', function () {
         return "Halo Warga! Ini halaman kamu.";
@@ -24,5 +22,5 @@ Route::middleware('auth')->group(function () {
     // Rute untuk Warga 
     Route::get('/lapor', [ReportController::class, 'index'])->name('user.lapor');
     Route::post('/lapor', [ReportController::class, 'store'])
-        -> name('user.lapor.store');
+        ->name('user.lapor.store');
 });
