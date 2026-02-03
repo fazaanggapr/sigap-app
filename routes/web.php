@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ResponseController;
 use Illuminate\Support\Facades\Route;
 
 // Jalur Tamu (Belum Login) 
@@ -23,4 +24,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/lapor', [ReportController::class, 'index'])->name('user.lapor');
     Route::post('/lapor', [ReportController::class, 'store'])
         ->name('user.lapor.store');
+
+    // Route dengan Parameter {id} (Wildcard) 
+// Artinya: URL-nya dinamis, misal /report/1, /report/5, dst. 
+// 1. Jalur Detail Laporan (Membawa ID Laporan) 
+    Route::get('/report/{report}', [ReportController::class, 'show'])
+        ->name('report.show');
+    // 2. Jalur Update Status (Mengubah Data) 
+    Route::put('/report/{report}', [ReportController::class, 'update'])
+        ->name('report.update');
+
+    Route::post('/response', [ResponseController::class, 'store'])
+        ->name('response.store');
 });
