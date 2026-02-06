@@ -4,23 +4,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id(); 
-            // Identitas Warga (NIK/NIS) - Wajib Unik 
-            $table->string('identity_number')->unique();
-            $table->string('name'); 
-            $table->string('email')->unique(); 
-            $table->string('password'); 
-            $table->string('phone')->nullable(); // Boleh dikosongkan
-            // Jabatan: Pilihan Ganda (Enum) 
-            $table->enum('role', ['admin', 'petugas', 'masyarakat'])->default('masyarakat'); 
+            $table->id();
+            // --- TAMBAHAN KOLOM BARU --- 
+            $table->string('nik')->nullable()->unique();
+            $table->string('name');
+            $table->string('username')->unique(); // Login pakai ini 
+            $table->string('telp')->nullable();
+            $table->enum('role', ['admin', 'masyarakat']);
+            // --------------------------- 
+            $table->string('email')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });

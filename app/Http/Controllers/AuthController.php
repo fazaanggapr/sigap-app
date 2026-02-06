@@ -5,9 +5,37 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Report;
-
+use App\Models\User;
 class AuthController extends Controller
 {
+    // 1. Menampilkan Form Daftar 
+    public function showRegisterForm()
+    {
+        return view('auth.register');
+    }
+    // 2. Proses Simpan Warga Baru 
+    public function register(Request $request)
+    {
+        // VALIDASI: Pastikan NIK & Username belum pernah dipakai 
+        $data = $request->validate([
+            'nik' => 'required|numeric|unique:users',
+            'name' => 'required',
+            'username' => 'required|unique:users',
+            'password' => 'required|min:6',
+            'telp' => 'required|numeric',
+        ]);
+        // CREATE: Simpan ke Database 
+        User::create([
+            'nik' => $data['nik'],
+            'name' => $data['name'],
+            'username' => $data['username'],
+            'password' => bcrypt($data['password']), // Enkripsi Wajib! 
+            'telp' => $data['telp'],
+            'role' => 'masyarakat', // Default role otomatis Masyarakat 
+        ]);
+        return redirect()->route('login')->with('success', 'Akun berhasil 
+        dibuat! Silakan login.');
+    }
     // 1. Tampilkan Form Login 
     public function showLoginForm()
     {
@@ -19,7 +47,7 @@ class AuthController extends Controller
     {
         // Validasi input dulu 
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'username' => ['required'],
             'password' => ['required'],
         ]);
 
@@ -38,7 +66,7 @@ class AuthController extends Controller
 
         // Jika Gagal Login 
         return back()->withErrors([
-            'email' => 'Email atau Password salah!',
+            'username' => 'Username atau Password salah!',
         ]);
     }
 

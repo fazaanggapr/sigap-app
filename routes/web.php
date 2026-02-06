@@ -5,10 +5,22 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResponseController;
 use Illuminate\Support\Facades\Route;
 
+// --- PERBAIKAN UX --- 
+// Redirect Otomatis: Buka web -> Langsung lempar ke Login 
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
 // Jalur Tamu (Belum Login) 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.store');
+
+    // Jalur Registrasi 
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])
+        ->name('register');
+    Route::post('/register', [AuthController::class, 'register'])
+        ->name('register.store');
 });
 
 // Jalur Khusus Member (Sudah Login) 
