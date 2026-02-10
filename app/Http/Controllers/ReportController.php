@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-<<<<<<< HEAD
 use Barryvdh\DomPDF\Facade\Pdf;
-=======
->>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
 
 class ReportController extends Controller
 {
@@ -18,11 +15,7 @@ class ReportController extends Controller
     public function index()
     {
         // Query: "Tampilkan laporan milik SAYA saja" 
-<<<<<<< HEAD
         // Logika: WHERE user_id = ID Saya yang sedang login 
-=======
-       // Logika: WHERE user_id = ID Saya yang sedang login 
->>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
         $reports = Report::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
         return view('user.lapor', compact('reports'));
     }
@@ -51,18 +44,11 @@ class ReportController extends Controller
             'user_id' => Auth::id(),
             'title' => $request->title,
             'description' => $request->description,
-<<<<<<< HEAD
             'location' => $request->location,     // Nama Lokasi (Opsional) 
             'latitude' => $request->latitude,     // [BARU] Koordinat Lat 
             'longitude' => $request->longitude,    // [BARU] Koordinat Long 
             'image' => $imagePath,
             'status' => '0',
-=======
-            'location' => $request->location,
-            'image' => $imagePath,
-            'status' => '0', // pending
-
->>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
         ]);
 
         return redirect()->back()->with('success', 'Laporan berhasil dikirim!');
@@ -88,7 +74,6 @@ class ReportController extends Controller
         $report->update($data);
         return back()->with('success', 'Status laporan berhasil diperbarui!');
     }
-<<<<<<< HEAD
     // 5 Fungsi Cetak PDF 
     public function exportPdf()
     {
@@ -99,7 +84,5 @@ class ReportController extends Controller
         // Download file 
         return $pdf->download('laporan-pengaduan.pdf');
     }
-=======
->>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
 }
 
