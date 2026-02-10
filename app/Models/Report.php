@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     use HasFactory;
+<<<<<<< HEAD
     protected $fillable = [
         'user_id',
         'title',
@@ -15,6 +16,9 @@ class Report extends Model
         'image',
         'status'
     ];
+=======
+    protected $guarded = [];
+>>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
     // Relasi ke User (Pelapor) 
     public function user()
     {

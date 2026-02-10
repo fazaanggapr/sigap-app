@@ -37,11 +37,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/lapor', [ReportController::class, 'store'])
         ->name('user.lapor.store');
 
+<<<<<<< HEAD
     Route::get('/report/export/pdf', [
         ReportController::class,
         'exportPdf'
     ])->name('report.export');
     
+=======
+>>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
     // Route dengan Parameter {id} (Wildcard) 
 // Artinya: URL-nya dinamis, misal /report/1, /report/5, dst. 
 // 1. Jalur Detail Laporan (Membawa ID Laporan) 

@@ -5,6 +5,7 @@
 @section('content')
 <div class="row">
 
+<<<<<<< HEAD
     {{-- ALERT WELCOME --}}
     <div class="alert alert-info" role="alert">
         <marquee direction="left" scrollamount="8">
@@ -14,6 +15,9 @@
     </div>
 
     {{-- KOLOM KIRI: FORM --}}
+=======
+    {{-- KOLOM KIRI: FORM LAPOR --}}
+>>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
     <div class="col-md-5">
 
         @if (session('success'))
@@ -28,6 +32,7 @@
             </div>
 
             <div class="card-body">
+<<<<<<< HEAD
                 <form action="{{ route('user.lapor.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
@@ -63,6 +68,56 @@
                         <label class="form-label">Bukti Foto</label>
                         <input type="file" name="image" class="form-control">
                         <small class="text-muted">Format JPG/PNG max 2MB</small>
+=======
+                <form
+                    action="{{ route('user.lapor.store') }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                >
+                    @csrf
+
+                    <div class="mb-3">
+                        <label class="form-label">Judul Laporan</label>
+                        <input
+                            type="text"
+                            name="title"
+                            class="form-control"
+                            placeholder="Contoh: Jalan Berlubang"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Isi Keluhan</label>
+                        <textarea
+                            name="description"
+                            class="form-control"
+                            rows="4"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Lokasi Kejadian</label>
+                        <input
+                            type="text"
+                            name="location"
+                            class="form-control"
+                            placeholder="Contoh: Depan Pasar"
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Bukti Foto</label>
+                        <input
+                            type="file"
+                            name="image"
+                            class="form-control"
+                        >
+                        <small class="text-muted">
+                            Format JPG/PNG, maksimal 2MB
+                        </small>
+>>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">
@@ -73,7 +128,11 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     {{-- KOLOM KANAN: RIWAYAT --}}
+=======
+    {{-- KOLOM KANAN: TABEL RIWAYAT --}}
+>>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
     <div class="col-md-7">
         <div class="card shadow">
             <div class="card-header bg-success text-white">
@@ -84,12 +143,18 @@
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
+<<<<<<< HEAD
                             <th>Data</th>
+=======
+                            <th>Tanggal</th>
+                            <th>Judul</th>
+>>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
                             <th>Status & Balasan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($reports as $item)
+<<<<<<< HEAD
                         <tr>
                             <td>
                                 <strong>{{ $item->title }}</strong><br>
@@ -133,6 +198,47 @@
                                 @endif
                             </td>
                         </tr>
+=======
+                            <tr>
+                                <td>
+                                    {{ $item->created_at->format('d/m/Y') }}
+                                </td>
+
+                                <td>
+                                    <strong>{{ $item->title }}</strong><br>
+                                    <small class="text-muted">
+                                        {{ Str::limit($item->description, 30) }}
+                                    </small>
+                                </td>
+
+                                <td>
+                                    {{-- STATUS --}}
+                                    @if ($item->status == '0')
+                                        <span class="badge bg-danger">
+                                            Menunggu
+                                        </span>
+                                    @elseif ($item->status == 'proses')
+                                        <span class="badge bg-warning">
+                                            Diproses
+                                        </span>
+                                    @else
+                                        <span class="badge bg-success">
+                                            Selesai
+                                        </span>
+                                    @endif
+
+                                    {{-- BALASAN ADMIN --}}
+                                    @if ($item->responses->count() > 0)
+                                        <div class="mt-2 p-2 border rounded bg-light">
+                                            <small>
+                                                <strong>Admin:</strong>
+                                                {{ $item->responses->last()->response_text }}
+                                            </small>
+                                        </div>
+                                    @endif
+                                </td>
+                            </tr>
+>>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
                         @endforeach
                     </tbody>
                 </table>
@@ -140,6 +246,7 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 
 {{-- LEAFLET MAP --}}
 <script>
@@ -179,4 +286,6 @@
         getAddress(e.latlng.lat, e.latlng.lng);
     });
 </script>
+=======
+>>>>>>> 5849706b2745db8582b7a3c6ac5e436c5eab8469
 @endsection
