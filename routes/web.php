@@ -5,52 +5,53 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResponseController;
 use Illuminate\Support\Facades\Route;
 
-// --- PERBAIKAN UX --- 
-// Redirect Otomatis: Buka web -> Langsung lempar ke Login 
+// [1] RUANG TAMU (LANDING PAGE) 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('welcome');
 });
 
-// Jalur Tamu (Belum Login) 
+// [2] JALUR TAMU (Belum Login / Guest) 
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.store');
 
-    // Jalur Registrasi 
+    Route::get('/login', [AuthController::class, 'showLoginForm'])
+        ->name('login');
+
+    Route::post('/login', [AuthController::class, 'login'])
+        ->name('login.store');
+
     Route::get('/register', [AuthController::class, 'showRegisterForm'])
         ->name('register');
+
     Route::post('/register', [AuthController::class, 'register'])
         ->name('register.store');
 });
 
-// Jalur Khusus Member (Sudah Login) 
+// [3] JALUR MEMBER (Sudah Login / Auth) 
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    // Dashboard Admin 
-    Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
-    // Dashboard Warga (Sementara) 
-    Route::get('/warga/dashboard', function () {
-        return "Halo Warga! Ini halaman kamu.";
-    })->name('user.dashboard');
-    // Rute untuk Warga 
-    Route::get('/lapor', [ReportController::class, 'index'])->name('user.lapor');
-    Route::post('/lapor', [ReportController::class, 'store'])
-        ->name('user.lapor.store');
 
-    Route::get('/report/export/pdf', [
-        ReportController::class,
-        'exportPdf'
-    ])->name('report.export');
-    
-    // Route dengan Parameter {id} (Wildcard) 
-// Artinya: URL-nya dinamis, misal /report/1, /report/5, dst. 
-// 1. Jalur Detail Laporan (Membawa ID Laporan) 
-    Route::get('/report/{report}', [ReportController::class, 'show'])
-        ->name('report.show');
-    // 2. Jalur Update Status (Mengubah Data) 
-    Route::put('/report/{report}', [ReportController::class, 'update'])
-        ->name('report.update');
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('logout');
+
+// Rute Khusus Admin         
+    Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])
+        ->name('admin.dashboard');
+
+    Route::get('/report/export/pdf', [ReportController::class, 'exportPdf'])
+        ->name('report.export');
 
     Route::post('/response', [ResponseController::class, 'store'])
         ->name('response.store');
+
+// Rute Khusus Warga 
+    Route::get('/lapor', [ReportController::class, 'index'])
+        ->name('user.lapor');
+
+    Route::post('/lapor', [ReportController::class, 'store'])
+        ->name('user.lapor.store');
+// Rute Tampil Detail (Bisa diakses Admin untuk mengubah status) 
+    Route::get('/report/{report}', [ReportController::class, 'show'])
+        ->name('report.show');
+
+    Route::put('/report/{report}', [ReportController::class, 'update'])
+        ->name('report.update');
 });
