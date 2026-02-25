@@ -13,17 +13,15 @@
                 </p>
                 <div class="mt-4">
                     {{-- Tombol Utama --}}
-                    <a href="{{ route('user.lapor') }}" class="btn btn-primary 
-    btn-lg px-4 gap-3 shadow-sm rounded-pill">
+                    <a href="{{ route('user.lapor') }}" class="btn btn-primary btn-lg px-4 gap-3 shadow-sm rounded-pill">
                         Tulis Pengaduan Sekarang
                     </a>
                     {{-- Tampilkan tombol daftar HANYA JIKA pengunjung belum
                     login (@guest) --}}
                     @guest
-                                        <a href="{{ route('register') }}" class="btn btn-outline
-                        secondary btn-lg px-4 ms-2 rounded-pill">
-                                            Daftar Akun Baru
-                                        </a>
+                        <a href="{{ route('register') }}" class="btn btn-outline-secondary btn-lg px-4 ms-2 rounded-pill shadow-sm">
+                            Daftar Akun Baru
+                        </a>
                     @endguest
                 </div>
             </div>

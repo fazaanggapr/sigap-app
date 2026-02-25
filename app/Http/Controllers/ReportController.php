@@ -16,7 +16,8 @@ class ReportController extends Controller
     {
         // Query: "Tampilkan laporan milik SAYA saja" 
         // Logika: WHERE user_id = ID Saya yang sedang login 
-        $reports = Report::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        // eager-load responses to avoid N+1 and ensure view can access them
+        $reports = Report::with('responses')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
         return view('user.lapor', compact('reports'));
     }
 
@@ -40,13 +41,13 @@ class ReportController extends Controller
         }
 
         // C. Simpan ke Database
+        // NOTE: current migrations don't include latitude/longitude and 'location'
+        // might be non-nullable. Use a safe default to avoid SQL errors.
         Report::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
             'description' => $request->description,
-            'location' => $request->location,     // Nama Lokasi (Opsional) 
-            'latitude' => $request->latitude,     // [BARU] Koordinat Lat 
-            'longitude' => $request->longitude,    // [BARU] Koordinat Long 
+            'location' => $request->location ?? '',
             'image' => $imagePath,
             'status' => '0',
         ]);
