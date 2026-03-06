@@ -45,6 +45,7 @@ class ReportController extends Controller
         // might be non-nullable. Use a safe default to avoid SQL errors.
         Report::create([
             'user_id' => Auth::id(),
+            'category'    => $request->category,
             'title' => $request->title,
             'description' => $request->description,
             'location' => $request->location ?? '',

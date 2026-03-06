@@ -3,146 +3,116 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
-<div class="container mt-4 mb-5">
+    <div class="container mt-4 mb-5">
 
-    {{-- HEADER & TOMBOL EXPORT --}}
-    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-        <div>
-            <h2 class="fw-bold text-primary mb-0">Executive Dashboard</h2>
-            <p class="text-muted mb-0">
-                Pusat Kendali Sistem Informasi Pengaduan Masyarakat
-            </p>
+        {{-- HEADER & TOMBOL EXPORT --}}
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+            <div>
+                <h2 class="fw-bold text-success mb-0"><i data-lucide="leaf"
+                        style="width: 35px; height: 35px; color: #198754;"></i>
+                    Dashboard Lingkungan</h2>
+                <p class="text-muted mb-0">Pusat Kendali Sistem Informasi Pelaporan Lingkungan (SIGAP)</p>
+            </div>
+            <div>
+                <a href="{{ route('report.export') }}" class="btn btn-danger btn-lg shadow-sm rounded-pill px-4">
+                    Download Laporan PDF <i data-lucide="download" style="width: 20px; height: 20px;"></i>
+                </a>
+            </div>
         </div>
-        <div>
-            <a href="{{ route('report.export') }}" 
-               class="btn btn-danger btn-lg shadow-sm rounded-pill px-4">
-                Download Laporan PDF
-            </a>
+
+        {{-- KOTAK STATISTIK --}}
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card bg-success text-white shadow border-0 rounded-4">
+                    <div class="card-body">
+                        <h6 class="text-uppercase fw-bold mb-1"><i data-lucide="file"
+                                style="width: 19px; height: 19px;"></i> Total Laporan</h6>
+                        <h2 class="fw-bold">{{ $reports->count() }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-danger text-white shadow border-0 rounded-4">
+                    <div class="card-body">
+                        <h6 class="text-uppercase fw-bold mb-1"><i data-lucide="file-clock"
+                                style="width: 19px; height: 19px;"></i> Menunggu</h6>
+                        <h2 class="fw-bold">{{ $reports->where('status', '0')->count() }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-warning text-dark shadow border-0 rounded-4">
+                    <div class="card-body">
+                        <h6 class="text-uppercase fw-bold mb-1"><i data-lucide="file-input"
+                                style="width: 19px; height: 19px;"></i> Diproses</h6>
+                        <h2 class="fw-bold">{{ $reports->where('status', 'proses')->count() }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-white shadow border-0 rounded-4" style="background-color: #146c43;">
+                    <div class="card-body">
+                        <h6 class="text-uppercase fw-bold mb-1"><i data-lucide="file-check"
+                                style="width: 19px; height: 19px;"></i> Selesai</h6>
+                        <h2 class="fw-bold">{{ $reports->where('status', 'selesai')->count() }}</h2>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        {{-- TABEL DATA --}}
+        <div class="card shadow border-0 rounded-4">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="mb-0 fw-bold text-success">
+                    <i data-lucide="table-2" style="width: 23px; height: 23px;"></i> Daftar Laporan Lingkungan Masuk
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-success">
+                            <tr>
+                                <th class="ps-4">No</th>
+                                <th>Tanggal Lapor</th>
+                                <th>Pelapor</th>
+                                <th>Judul Laporan</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center pe-4">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($reports as $index => $item)
+                                <tr>
+                                    <td class="ps-4"><strong>{{ $index + 1 }}</strong></td>
+                                    <td>
+                                        <small class="text-muted">
+                                            {{ $item->created_at->format('d M Y, H:i') }} WIB
+                                        </small>
+                                    </td>
+                                    <td><span class="fw-bold">{{ $item->user->name }}</span></td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->title, 40) }}</td>
+                                    <td class="text-center">
+                                        @if ($item->status == '0')
+                                            <span class="badge bg-danger rounded-pill px-3 py-2">Menunggu</span>
+                                        @elseif ($item->status == 'proses')
+                                            <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Diproses</span>
+                                        @else
+                                            <span class="badge bg-success rounded-pill px-3 py-2">Selesai</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-center pe-4">
+                                        <a href="{{ route('report.show', $item->id) }}"
+                                            class="btn btn-outline-success btn-sm rounded-pill px-3 fw-bold">
+                                            Proses Data
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-    {{-- KOTAK STATISTIK --}}
-    <div class="row mb-4">
-
-        <div class="col-md-3 mb-3">
-            <div class="card bg-primary text-white shadow border-0 rounded-4">
-                <div class="card-body">
-                    <h6 class="text-uppercase fw-bold mb-1">Total Laporan</h6>
-                    <h2 class="fw-bold">{{ $reports->count() }}</h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-3">
-            <div class="card bg-danger text-white shadow border-0 rounded-4">
-                <div class="card-body">
-                    <h6 class="text-uppercase fw-bold mb-1">Menunggu</h6>
-                    <h2 class="fw-bold">
-                        {{ $reports->where('status', '0')->count() }}
-                    </h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-3">
-            <div class="card bg-warning text-dark shadow border-0 rounded-4">
-                <div class="card-body">
-                    <h6 class="text-uppercase fw-bold mb-1">Diproses</h6>
-                    <h2 class="fw-bold">
-                        {{ $reports->where('status', 'proses')->count() }}
-                    </h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-3">
-            <div class="card bg-success text-white shadow border-0 rounded-4">
-                <div class="card-body">
-                    <h6 class="text-uppercase fw-bold mb-1">Selesai</h6>
-                    <h2 class="fw-bold">
-                        {{ $reports->where('status', 'selesai')->count() }}
-                    </h2>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    {{-- TABEL DATA --}}
-    <div class="card shadow border-0 rounded-4">
-        <div class="card-header bg-white py-3 border-bottom">
-            <h5 class="mb-0 fw-bold text-secondary">
-                Daftar Pengaduan Masuk
-            </h5>
-        </div>
-
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="ps-4">No</th>
-                            <th>Tanggal Lapor</th>
-                            <th>Pelapor</th>
-                            <th>Judul Laporan</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center pe-4">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @foreach ($reports as $index => $item)
-                        <tr>
-                            <td class="ps-4">
-                                <strong>{{ $index + 1 }}</strong>
-                            </td>
-
-                            <td>
-                                <small class="text-muted">
-                                    {{ $item->created_at->format('d M Y, H:i') }} WIB
-                                </small>
-                            </td>
-
-                            <td>
-                                <span class="fw-bold">
-                                    {{ $item->user->name }}
-                                </span>
-                            </td>
-
-                            <td>
-                                {{ \Illuminate\Support\Str::limit($item->title, 40) }}
-                            </td>
-
-                            <td class="text-center">
-                                @if ($item->status == '0')
-                                    <span class="badge bg-danger rounded-pill px-3 py-2">
-                                        Menunggu
-                                    </span>
-                                @elseif ($item->status == 'proses')
-                                    <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
-                                        Diproses
-                                    </span>
-                                @else
-                                    <span class="badge bg-success rounded-pill px-3 py-2">
-                                        Selesai
-                                    </span>
-                                @endif
-                            </td>
-
-                            <td class="text-center pe-4">
-                                <a href="{{ route('report.show', $item->id) }}"
-                                   class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-bold">
-                                    Proses Data
-                                </a>
-                            </td>
-                        </tr>
-                        @endforeach
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-</div>
 @endsection
