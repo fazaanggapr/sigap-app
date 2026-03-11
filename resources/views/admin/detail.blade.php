@@ -1,15 +1,11 @@
 @extends('layouts.master')
-
 @section('title', 'Detail Laporan')
-
 @section('content')
-
     <div class="mb-3">
         <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-success btn-sm rounded-pill px-3">
             ← Kembali ke Dashboard
         </a>
     </div>
-
     <div class="row">
         {{-- Detail Laporan Lingkungan --}}
         <div class="col-md-7">
@@ -65,7 +61,6 @@
                 </div>
             </div>
         </div>
-
         {{-- Verifikasi & Tanggapan --}}
         <div class="col-md-5">
             <div class="card shadow border-0 rounded-4">
@@ -93,9 +88,7 @@
                             <small class="text-muted">* Pilih status untuk mengubah otomatis</small>
                         </div>
                     </form>
-
                     <hr>
-
                     {{-- Form Tanggapan --}}
                     <form action="{{ route('response.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -113,7 +106,6 @@
                             KIRIM TANGGAPAN
                         </button>
                     </form>
-
                     {{-- Riwayat Percakapan --}}
                     <div class="mt-4">
                         <h6 class="fw-bold"><i data-lucide="message-circle" style="width: 20px; height: 20px;"></i> Riwayat Tanggapan:</h6>
@@ -142,7 +134,6 @@
             </div>
         </div>
     </div>
-
     <script>
     function konfirmasiStatus(selectEl) {
         const label = selectEl.options[selectEl.selectedIndex].text.trim();
@@ -165,5 +156,4 @@
         });
     }
 </script>
-
 @endsection

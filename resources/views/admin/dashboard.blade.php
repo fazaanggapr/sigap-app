@@ -1,10 +1,7 @@
 @extends('layouts.master')
-
 @section('title', 'Dashboard Admin')
-
 @section('content')
     <div class="container mt-4 mb-5">
-
         {{-- HEADER & TOMBOL EXPORT --}}
         <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
             <div>
@@ -19,7 +16,6 @@
                 </a>
             </div>
         </div>
-
         {{-- KOTAK STATISTIK --}}
         <div class="row mb-4">
             <div class="col-md-3 mb-3">
@@ -59,7 +55,6 @@
                 </div>
             </div>
         </div>
-
         {{-- TABEL DATA --}}
         <div class="card shadow border-0 rounded-4">
             <div class="card-header bg-white py-3 border-bottom">
@@ -113,6 +108,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 @endsection

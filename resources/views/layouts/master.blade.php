@@ -63,6 +63,12 @@
 
     {{-- SweetAlert: Tampilkan flash message dari session --}}
 <script>
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then(reg => console.log('Service Worker registered', reg))
+    .catch(err => console.log('Service Worker failed', err));
+}
     @if(session('success'))
         Swal.fire({
             icon: 'success',
